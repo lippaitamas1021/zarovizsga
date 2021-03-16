@@ -2,51 +2,44 @@ package hu.nive.ujratervezes.zarovizsga.dogtypes;
 
 import org.flywaydb.core.Flyway;
 import org.mariadb.jdbc.MariaDbDataSource;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DogTypes {
 
-    private DataSource dataSource;
+    private List<String> dogNames = new ArrayList<>();
+    private MariaDbDataSource dataSource;
 
     public DogTypes(MariaDbDataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public List<String> getDogsByCountry(String country) {
-        return null;
-    }
-
-    public static void main(String[] args) {
-        MariaDbDataSource dataSource = new MariaDbDataSource();
         try {
+            dataSource = new MariaDbDataSource();
             dataSource.setUrl("jdbc:mariadb://localhost:3306/employees?useUnicode=true");
             dataSource.setUser("employees");
             dataSource.setPassword("employees");
         } catch (SQLException se) {
-            throw new IllegalStateException("Can not create connection");
+            throw new IllegalStateException("Can not create data source", se);
         }
         Flyway flyway = Flyway.configure().dataSource(dataSource).load();
         flyway.clean();
         flyway.migrate();
-        try (
-                Connection conn = dataSource.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT id FROM dog_types WHERE country = HUNGARY"))
-        {
-            List<String> dogs = new ArrayList<>();
-            while (rs.next()) {
-                String name = rs.getString("name");
-                dogs.add(name);
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("select name from dog_types where country = ?");) {
+            stmt.setString(1, country);
+            try (
+                    ResultSet rs = stmt.executeQuery();) {
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    dogNames.add(name);
+                }
+                return dogNames;
             }
-            System.out.println(dogs);
-        } catch (SQLException se) {
-            throw new IllegalStateException("Can not select", se);
+        } catch (SQLException sqle) {
+            throw new IllegalArgumentException("Can not select dog");
         }
     }
 }

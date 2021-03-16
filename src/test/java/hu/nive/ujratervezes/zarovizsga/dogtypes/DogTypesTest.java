@@ -1,4 +1,4 @@
-/*package hu.nive.ujratervezes.zarovizsga.dogtypes;
+package hu.nive.ujratervezes.zarovizsga.dogtypes;
 
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,4 +40,3 @@ public class DogTypesTest {
 
 }
 
- */

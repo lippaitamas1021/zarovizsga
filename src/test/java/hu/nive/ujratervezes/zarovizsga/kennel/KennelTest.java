@@ -1,4 +1,4 @@
-/*package hu.nive.ujratervezes.zarovizsga.kennel;
+package hu.nive.ujratervezes.zarovizsga.kennel;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,6 +61,3 @@ public class KennelTest {
         assertEquals(List.of("Bigli", "Morzsi"), kennel.getHappyDogNames(7));
     }
 }
-
-
- */

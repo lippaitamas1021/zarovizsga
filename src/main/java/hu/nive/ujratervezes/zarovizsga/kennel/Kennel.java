@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Kennel {
 
-    private List<Dog> dogs = new ArrayList<>();
+    List<Dog> dogs = new ArrayList<>();
 
     public List<Dog> getDogs() {
-        return new ArrayList<>(dogs);
+        return dogs;
     }
 
     public void addDog(Dog dog) {
@@ -22,34 +22,73 @@ public class Kennel {
     }
 
     public Dog findByName(String name) {
-        Dog d = null;
         for (Dog dog : dogs) {
             if (dog.getName().equals(name)) {
-                d = new Husky(dog.getName());
-            } else {
-                throw new IllegalArgumentException("Can not find dog under this name");
+                return dog;
             }
         }
-        return d;
+        throw new IllegalArgumentException("No dog under this name");
     }
 
     public void playWith(String name, int hours) {
-        for (Dog dog : dogs) {
-            if (name.equals(dog.getName())) {
-                    dog.play(hours);
-                }
-            }
-        }
+        findByName(name).play(hours);
+    }
 
     public List<String> getHappyDogNames(int minHappiness) {
-        List<String> result = new ArrayList<>();
-
+        List<String> happyDogs = new ArrayList<>();
         for (Dog dog : dogs) {
             if (minHappiness < dog.getHappiness()) {
-                result.add(dog.getName());
+                happyDogs.add(dog.getName());
             }
         }
-        return result;
+        return happyDogs;
     }
+
+//    private List<Dog> dogs = new ArrayList<>();
+//
+//    public List<Dog> getDogs() {
+//        return new ArrayList<>(dogs);
+//    }
+//
+//    public void addDog(Dog dog) {
+//        dogs.add(dog);
+//    }
+//
+//    public void feedAll() {
+//        for (Dog dog : dogs) {
+//            dog.feed();
+//        }
+//    }
+//
+//    public Dog findByName(String name) {
+//        Dog d = null;
+//        for (Dog dog : dogs) {
+//            if (dog.getName().equals(name)) {
+//                d = new Husky(dog.getName());
+//            } else {
+//                throw new IllegalArgumentException("Can not find dog under this name");
+//            }
+//        }
+//        return d;
+//    }
+//
+//    public void playWith(String name, int hours) {
+//        for (Dog dog : dogs) {
+//            if (name.equals(dog.getName())) {
+//                    dog.play(hours);
+//                }
+//            }
+//        }
+//
+//    public List<String> getHappyDogNames(int minHappiness) {
+//        List<String> result = new ArrayList<>();
+//
+//        for (Dog dog : dogs) {
+//            if (minHappiness < dog.getHappiness()) {
+//                result.add(dog.getName());
+//            }
+//        }
+//        return result;
+//    }
 }
 

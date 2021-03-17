@@ -8,11 +8,25 @@ public class Beagle extends Dog {
 
     @Override
     void feed() {
-        this.happiness += 2;
+        happiness += 2;
     }
 
     @Override
     void play(int hours) {
-        this.happiness += hours * 2;
+        happiness += hours * 2;
     }
+
+//    public Beagle(String name) {
+//        super(name);
+//    }
+//
+//    @Override
+//    void feed() {
+//        this.happiness += 2;
+//    }
+//
+//    @Override
+//    void play(int hours) {
+//        this.happiness += hours * 2;
+//    }
 }

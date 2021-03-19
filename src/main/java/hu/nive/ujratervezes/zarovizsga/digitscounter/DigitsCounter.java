@@ -1,24 +1,21 @@
 package hu.nive.ujratervezes.zarovizsga.digitscounter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DigitsCounter {
 
-
     public int getCountOfDigits(String s) {
-        if (s == null || s.equals("")) {
+        if (s == null || s.length() == 0) {
             return 0;
         }
-
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            int key = Integer.parseInt(String.valueOf(s.charAt(i)));
-                if (!result.contains(key)) {
-                    result.add(key);
-                }
+        Set<Character> chars = new HashSet<>();
+        for (char c : s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                chars.add(c);
             }
-        return result.size();
+        }
+        return chars.size();
     }
 }
 

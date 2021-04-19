@@ -3,7 +3,7 @@ package hu.nive.ujratervezes.zarovizsga.kennel;
 public abstract class Dog {
 
     private String name;
-    private int happiness = 0;
+    private int happiness;
 
     public Dog(String name) {
         this.name = name;

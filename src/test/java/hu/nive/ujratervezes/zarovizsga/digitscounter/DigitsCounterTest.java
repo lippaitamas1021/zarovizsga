@@ -8,7 +8,6 @@ public class DigitsCounterTest {
     @Test
     void getCountOfDigits() {
         DigitsCounter digitsCounter = new DigitsCounter();
-
         assertEquals(0, digitsCounter.getCountOfDigits(null));
         assertEquals(0, digitsCounter.getCountOfDigits(""));
         assertEquals(1, digitsCounter.getCountOfDigits("1"));

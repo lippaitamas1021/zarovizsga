@@ -1,7 +1,6 @@
 package hu.nive.ujratervezes.zarovizsga.dogtypes;
 
-import org.flywaydb.core.Flyway;
-import org.mariadb.jdbc.MariaDbDataSource;
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,37 +8,33 @@ import java.util.List;
 public class DogTypes {
 
     private List<String> dogNames = new ArrayList<>();
-    private MariaDbDataSource dataSource;
+    private DataSource dataSource;
 
-    public DogTypes(MariaDbDataSource dataSource) {
+    public DogTypes(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     public List<String> getDogsByCountry(String country) {
-        try {
-            dataSource = new MariaDbDataSource();
-            dataSource.setUrl("jdbc:mariadb://localhost:3306/employees?useUnicode=true");
-            dataSource.setUser("employees");
-            dataSource.setPassword("employees");
-        } catch (SQLException se) {
-            throw new IllegalStateException("Can not create data source", se);
-        }
-        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
-        flyway.clean();
-        flyway.migrate();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("select name from dog_types where country = ?");) {
+             PreparedStatement stmt =
+                     conn.prepareStatement("SELECT NAME FROM dog_types WHERE lower(country) = ? ORDER BY NAME");) {
             stmt.setString(1, country);
-            try (
-                    ResultSet rs = stmt.executeQuery();) {
+            return convertToNames(stmt);
+        } catch (SQLException sqle) {
+            throw new IllegalArgumentException("Error by insert", sqle);
+        }
+    }
+
+    public List<String> convertToNames(PreparedStatement stmt) {
+        List<String> result = new ArrayList<>();
+            try (ResultSet rs = stmt.executeQuery();) {
                 while (rs.next()) {
                     String name = rs.getString("name");
-                    dogNames.add(name);
+                    result.add(name.toLowerCase());
                 }
-                return dogNames;
+            } catch (SQLException sqle) {
+                throw new IllegalArgumentException("Error by insert", sqle);
             }
-        } catch (SQLException sqle) {
-            throw new IllegalArgumentException("Can not select dog");
-        }
+        return result;
     }
 }

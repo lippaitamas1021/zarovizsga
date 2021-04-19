@@ -20,9 +20,9 @@ public class DogTypesTest {
         dataSource.setUrl("jdbc:mariadb://localhost:3306/employees?useUnicode=true");
         dataSource.setUser("employees");
         dataSource.setPassword("employees");
-        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
-        flyway.clean();
-        flyway.migrate();
+//        Flyway flyway = Flyway.configure().dataSource(dataSource).load();
+//        flyway.clean();
+//        flyway.migrate();
         dogTypes = new DogTypes(dataSource);
     }
 
@@ -33,6 +33,5 @@ public class DogTypesTest {
         assertTrue(types.contains("komondor"));
         assertTrue(types.contains("kuvasz"));
     }
-
 }
 
